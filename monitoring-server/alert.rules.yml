@@ -1,0 +1,19 @@
+groups:
+  - name: ec2-alerts
+    rules:
+
+      - alert: EC2Down
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "EC2 instance is DOWN"
+
+      - alert: HighCPU
+        expr: 100 - (avg by(instance)(rate(node_cpu_seconds_total{mode="idle"}[2m])) * 100) > 80
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU on EC2"
