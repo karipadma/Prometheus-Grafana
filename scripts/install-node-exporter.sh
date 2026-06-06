@@ -14,17 +14,18 @@ tar -xvf node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz
 
 echo "Creating node_exporter user..."
 
-sudo useradd --no-create-home --shell /bin/false node_exporter || true
+id node_exporter &>/dev/null || useradd --no-create-home --shell /bin/false node_exporter
 
 echo "Installing binary..."
 
 sudo cp node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64/node_exporter /usr/local/bin/
 
 sudo chown node_exporter:node_exporter /usr/local/bin/node_exporter
+sudo chmod +x /usr/local/bin/node_exporter
 
 echo "Creating systemd service..."
 
-sudo tee /etc/systemd/system/node_exporter.service > /dev/null <<EOF
+cat <<EOF | sudo tee /etc/systemd/system/node_exporter.service > /dev/null
 [Unit]
 Description=Node Exporter
 Wants=network-online.target
@@ -40,7 +41,7 @@ ExecStart=/usr/local/bin/node_exporter
 WantedBy=multi-user.target
 EOF
 
-echo "Starting service..."
+echo "Reloading systemd..."
 
 sudo systemctl daemon-reload
 sudo systemctl enable node_exporter
@@ -50,4 +51,4 @@ echo "Checking status..."
 
 sudo systemctl status node_exporter --no-pager
 
-echo "Node Exporter installation completed."
+echo "Node Exporter installation completed successfully.""
