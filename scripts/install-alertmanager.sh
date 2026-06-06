@@ -16,6 +16,7 @@ sudo cp alertmanager-0.28.1.linux-amd64/amtool /usr/local/bin/
 
 sudo cp /home/ec2-user/Prometheus-Grafana/monitoring-server/alertmanager.yml /etc/alertmanager/
 sudo cp /home/ec2-user/Prometheus-Grafana/monitoring-server/alertmanager.service /etc/systemd/system/
+sudo cp /home/ec2-user/Prometheus-Grafana/monitoring-server/alert.rules.yml /etc/prometheus/
 
 sudo systemctl daemon-reload
 sudo systemctl enable alertmanager
